@@ -8,7 +8,7 @@ exports.getInstance = () => (
   instance ?
   Promise.resolve(instance) :
   new Promise((resolve, reject) => {
-  MsRest.loginWithUsernamePassword(config.azure.user, config.azure.password, (err, credentials) => {
+  MsRest.loginWithServicePrincipalSecret(config.azure.appId, config.azure.secret, config.azure.domain (err, credentials) => {
     if (err) {
       reject(err);
     } else {
