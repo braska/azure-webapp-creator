@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  .error-page
+    h2= message
+    pre #{error.stack}
+    if error.data
+      pre #{JSON.stringify(error.data)}

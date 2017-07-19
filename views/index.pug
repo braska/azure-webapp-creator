@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  form(action="/", method="post")
+    .form-group
+      label(for="appname") App name
+      input.form-control(type="text", id="appname", name="appname")
+    button.btn.btn-default(type="submit") Create
