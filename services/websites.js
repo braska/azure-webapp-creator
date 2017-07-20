@@ -30,6 +30,9 @@ exports.getInstance = () => (
               },
               "repoURL": {
                 "value": config.webapp.repoURL
+              },
+              "zoneName": {
+                "value": config.webapp.zoneName
               }
             };
 
@@ -37,7 +40,7 @@ exports.getInstance = () => (
               "properties": {
                 "parameters": parameters,
                 "template": template,
-                "mode": "Complete"
+                "mode": "Incremental"
               }
             };
 

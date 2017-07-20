@@ -26,6 +26,9 @@
       "metadata": {
         "description": "App Service Plan Id"
       }
+    },
+    "zoneName": {
+      "type": "string"
     }
   },
   "variables": {
@@ -56,6 +59,32 @@
             "IsManualIntegration": true
           }
         }
+      ]
+    },
+    {
+      "type": "Microsoft.Network/dnsZones/CNAME",
+      "name": "[concat(parameters('zoneName'), '/', parameters('siteName'))]",
+      "apiVersion": "2016-04-01",
+      "location": "global",
+      "properties": {
+        "TTL": 3600,
+        "CNAMERecord": {
+          "cname": "[concat(parameters('siteName'), '.azurewebsites.net')]"
+        }
+      },
+      "dependsOn": [
+          "[concat('Microsoft.Web/sites/',parameters('siteName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/hostnameBindings",
+      "name": "[concat(parameters('siteName'), '/', parameters('siteName'), '.', parameters('zoneName'))]",
+      "apiVersion":"2016-03-01",
+      "location":"[resourceGroup().location]",
+      "properties": {},
+      "dependsOn": [
+          "[concat('Microsoft.Web/sites/',parameters('siteName'))]",
+          "[concat('Microsoft.Network/dnsZones/', parameters('zoneName'), '/CNAME/', parameters('siteName'))]"
       ]
     }
   ]

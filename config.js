@@ -13,6 +13,7 @@ module.exports = {
       tier: 'Standard'
     },
     planId: process.env.PLAN_ID,
-    repoURL: process.env.REPO_URL
+    repoURL: process.env.REPO_URL,
+    zoneName: process.env.ZONE_NAME
   }
 };
