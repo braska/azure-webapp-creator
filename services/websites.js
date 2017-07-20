@@ -1,5 +1,5 @@
 const MsRest = require('ms-rest-azure');
-const webSiteManagementClient = require('azure-arm-website');
+const ResourceManagementClient = require('azure-arm-resource').ResourceManagementClient;
 const config = require('../config');
 
 let client;
@@ -14,29 +14,33 @@ exports.getInstance = () => (
     if (err) {
       reject(err);
     } else {
-      client = new webSiteManagementClient(credentials, config.azure.subscriptionId);
+      client = new ResourceManagementClient(credentials, config.azure.subscriptionId);
       instance = {
-        createWebSite(appname, planId) {
+        loadTemplateAndDeploy(appname) {
           return new Promise((resolve, reject) => {
-            client.webApps.createOrUpdate(config.webapp.resourceGroup, appname, {
-              location: config.webapp.location,
-              serverFarmId: planId
-            }, (err, result) => {
-              if (err) {
-                reject(err);
-              } else {
-                resolve(result);
+            try {
+              const templateFilePath = path.join(__dirname, "..", "deployment_template.json");
+              const template = JSON.parse(fs.readFileSync(templateFilePath, 'utf8'));
+            } catch (ex) {
+              reject(ex);
+              return;
+            }
+
+            const parameters = {
+              "siteName": {
+                "value": appname
               }
-            });
-          });
-        },
-        createHostingPlan(name) {
-          return new Promise((resolve, reject) => {
-            client.appServicePlans.createOrUpdateServerFarm(config.webapp.resourceGroup, name, {
-              serverFarmWithRichSkuName: name,
-              location: config.webapp.location,
-              sku: config.webapp.sku
-            }, (err, result) => {
+            };
+
+            const deploymentParameters = {
+              "properties": {
+                "parameters": parameters,
+                "template": template,
+                "mode": "Incremental"
+              }
+            };
+
+            resourceClient.deployments.createOrUpdate(config.webapp.resourceGroup, appname, deploymentParameters, (err, result) => {
               if (err) {
                 reject(err);
               } else {
