@@ -1,4 +1,5 @@
 const Websites = require('./services/websites');
+const config = require('./config');
 
 exports.index = (req, res) => {
   res.render('index', {
@@ -16,6 +17,13 @@ exports.post = (req, res, next) => {
   Websites
     .getInstance()
     .then((client) => {
+      return client
+        .createHostingPlan(req.body.appname)
+        .then((result) => {
+          return client.createWebSite(req.body.appname, result.id);
+        });
+    })
+    .then(() => {
       res.redirect('/');
     })
     .catch(next)

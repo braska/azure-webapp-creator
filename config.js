@@ -4,5 +4,14 @@ module.exports = {
     secret: process.env.AZURE_SECRET,
     domain: process.env.AZURE_DIRECTORY_ID,
     subscriptionId: process.env.AZURE_SUBSCRIPTION_ID
+  },
+  webapp: {
+    resourceGroup: process.env.RESOURCE_GROUP,
+    location: process.env.LOCATION,
+    sku: {
+      name: 'S1',
+      capacity: 1,
+      tier: 'Standard'
+    }
   }
 };

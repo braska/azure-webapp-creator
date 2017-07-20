@@ -1,6 +1,8 @@
 const MsRest = require('ms-rest-azure');
-const webSiteManagement = require('azure-asm-website');
+const webSiteManagementClient = require('azure-arm-website');
 const config = require('../config');
+
+let client;
 
 let instance;
 
@@ -12,7 +14,38 @@ exports.getInstance = () => (
     if (err) {
       reject(err);
     } else {
-      instance = webSiteManagement.createWebSiteManagementClient(credentials, config.azure.subscriptionId);
+      client = new webSiteManagementClient(credentials, config.azure.subscriptionId);
+      instance = {
+        createWebSite(appname, planId) {
+          return new Promise((resolve, reject) => {
+            client.webApps.createOrUpdate(config.webapp.resourceGroup, appname, {
+              location: config.webapp.location,
+              serverFarmId: planId
+            }, (err, result) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(result);
+              }
+            });
+          });
+        },
+        createHostingPlan(name) {
+          return new Promise((resolve, reject) => {
+            client.appServicePlans.createOrUpdateServerFarm(config.webapp.resourceGroup, name, {
+              serverFarmWithRichSkuName: name,
+              location: config.webapp.location,
+              sku: config.webapp.sku
+            }, (err, result) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(result);
+              }
+            });
+          });
+        }
+      };
       resolve(instance);
     }
   });
