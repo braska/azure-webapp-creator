@@ -27,6 +27,9 @@ exports.getInstance = () => (
               },
               "planId": {
                 "value": config.webapp.planId
+              },
+              "repoURL": {
+                "value": config.webapp.repoURL
               }
             };
 
