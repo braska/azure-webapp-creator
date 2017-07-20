@@ -11,6 +11,8 @@ module.exports = {
       name: 'S1',
       capacity: 1,
       tier: 'Standard'
-    }
+    },
+    planId: process.env.PLAN_ID,
+    repoURL: process.env.REPO_URL
   }
 };

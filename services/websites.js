@@ -24,6 +24,9 @@ exports.getInstance = () => (
             const parameters = {
               "siteName": {
                 "value": appname
+              },
+              "planId": {
+                "value": config.webapp.planId
               }
             };
 
@@ -31,7 +34,7 @@ exports.getInstance = () => (
               "properties": {
                 "parameters": parameters,
                 "template": template,
-                "mode": "Incremental"
+                "mode": "Complete"
               }
             };
 
