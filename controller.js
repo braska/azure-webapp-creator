@@ -17,8 +17,7 @@ exports.post = (req, res, next) => {
   Websites
     .getInstance()
     .then((client) => client.loadTemplateAndDeploy(req.body.appname))
-    .then(() => {
-      res.redirect('/');
-    })
-    .catch(next)
+  res.render('info', {
+    title: 'Information'
+  });
 };
