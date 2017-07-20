@@ -16,13 +16,7 @@ exports.post = (req, res, next) => {
   }
   Websites
     .getInstance()
-    .then((client) => {
-      return client
-        .createHostingPlan(req.body.appname)
-        .then((result) => {
-          return client.createWebSite(req.body.appname, result.id);
-        });
-    })
+    .then((client) => client.loadTemplateAndDeploy(req.body.appname))
     .then(() => {
       res.redirect('/');
     })

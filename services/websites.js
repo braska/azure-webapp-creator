@@ -1,6 +1,9 @@
+const path = require('path');
+const fs = require('fs');
 const MsRest = require('ms-rest-azure');
 const ResourceManagementClient = require('azure-arm-resource').ResourceManagementClient;
 const config = require('../config');
+const template = require('../deployment_template.json');
 
 let client;
 
@@ -18,14 +21,6 @@ exports.getInstance = () => (
       instance = {
         loadTemplateAndDeploy(appname) {
           return new Promise((resolve, reject) => {
-            try {
-              const templateFilePath = path.join(__dirname, "..", "deployment_template.json");
-              const template = JSON.parse(fs.readFileSync(templateFilePath, 'utf8'));
-            } catch (ex) {
-              reject(ex);
-              return;
-            }
-
             const parameters = {
               "siteName": {
                 "value": appname
@@ -40,7 +35,7 @@ exports.getInstance = () => (
               }
             };
 
-            resourceClient.deployments.createOrUpdate(config.webapp.resourceGroup, appname, deploymentParameters, (err, result) => {
+            client.deployments.createOrUpdate(config.webapp.resourceGroup, appname, deploymentParameters, (err, result) => {
               if (err) {
                 reject(err);
               } else {

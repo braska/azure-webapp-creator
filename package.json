@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "azure-arm-resource": "^2.0.0-preview",
-    "azure-arm-website": "^1.0.0-preview",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "ms-rest-azure": "^2.2.3",

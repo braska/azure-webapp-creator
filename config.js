@@ -7,7 +7,6 @@ module.exports = {
   },
   webapp: {
     resourceGroup: process.env.RESOURCE_GROUP,
-    location: process.env.LOCATION,
     sku: {
       name: 'S1',
       capacity: 1,
